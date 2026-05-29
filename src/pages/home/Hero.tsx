@@ -1,10 +1,9 @@
-// src/pages/home/Hero.tsx
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
+import BackgroundCarousel from './BackgroundCarousel';
 gsap.registerPlugin(SplitText);
-
 
 const SQUARES = [
   { letter: 'Y', bg: '#4BAFB8' },
@@ -13,12 +12,6 @@ const SQUARES = [
   { letter: 'N', bg: '#6bcf6b' },
 ];
 
-const SLIDES = [
-  '@/assets/images/home/carouselSlide1.webp',
-  '@/assets/images/home/carouselSlide2.webp',
-  '@/assets/images/home/carouselSlide3.webp',
-]
-
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const logoWrapRef = useRef<HTMLDivElement>(null);
@@ -26,49 +19,56 @@ export default function Hero() {
   const fullNameRef = useRef<HTMLSpanElement>(null);
   const careerNetRef = useRef<HTMLSpanElement>(null);
   const navbarRef = useRef<HTMLElement | null>(null);
+  const [carouselVisible, setCarouselVisible] = useState(false);
 
   useGSAP(() => {
-  const hasPlayed = sessionStorage.getItem('heroAnimPlayed');
+    const hasPlayed = sessionStorage.getItem('heroAnimPlayed');
 
-  if (hasPlayed) {
-    gsap.set(logoWrapRef.current, { opacity: 0 });
-    gsap.set(navbarRef.current, { y: 0, opacity: 1 });
-    gsap.set('#heroText', { opacity: 1, x: 0 });
-    gsap.set('#theRest', { opacity: 1 });
-    gsap.set('#buttons', { opacity: 1 });
-    return;
-  }
+    if (hasPlayed) {
+      gsap.set(logoWrapRef.current, { opacity: 0 });
+      gsap.set(navbarRef.current, { y: 0, opacity: 1 });
+      gsap.set('#heroText', { opacity: 1, x: 0 });
+      gsap.set('#theRest', { opacity: 1 });
+      gsap.set('#buttons', { opacity: 1 });
+      setCarouselVisible(true);
+      return;
+    }
 
-  if (navbarRef.current) gsap.set(navbarRef.current, { y: -80, opacity: 0 });
-  gsap.set('#heroText', { opacity: 0, x: -60 });
-  gsap.set('#theRest', { opacity: 0, y: 20 });
-  gsap.set('#buttons', { opacity: 0, y: 20 });
+    if (navbarRef.current) gsap.set(navbarRef.current, { y: -80, opacity: 0 });
+    gsap.set('#heroText', { opacity: 0, x: -60 });
+    gsap.set('#theRest', { opacity: 0, y: 20 });
+    gsap.set('#buttons', { opacity: 0, y: 20 });
 
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  tl.from(squaresRef.current, { scale: 0.5, opacity: 0, duration: 0.8 })
-    .from(fullNameRef.current, { width: 0, opacity: 0, duration: 0.7, ease: 'power2.inOut' }, '+=0.2')
-    .from(careerNetRef.current, { width: 0, opacity: 0, duration: 0.5, ease: 'power2.inOut' }, '-=0.3')
-    .to(logoWrapRef.current, {
-      scale: 0.3,
-      y: () => -(containerRef.current!.offsetHeight),
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.inOut',
-    }, '+=0.6')
-    .to(navbarRef.current, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' })
-    .to('#heroText', { opacity: 1, x: 0, ease: 'expo.out', duration: 1 }, 'reveal')
-    .to('#theRest', { opacity: 1, y: 0, ease: 'expo.out', duration: 1, delay: 0.2 }, 'reveal')
-    .to('#buttons', { opacity: 1, y: 0, ease: 'expo.out', duration: 1, delay: 0.4 }, 'reveal')
-    .call(() => sessionStorage.setItem('heroAnimPlayed', 'true'));
+    tl.from(squaresRef.current, { scale: 0.5, opacity: 0, duration: 0.8 })
+      .from(fullNameRef.current, { width: 0, opacity: 0, duration: 0.7, ease: 'power2.inOut' }, '+=0.2')
+      .from(careerNetRef.current, { width: 0, opacity: 0, duration: 0.5, ease: 'power2.inOut' }, '-=0.3')
+      .to(logoWrapRef.current, {
+        scale: 0.3,
+        y: () => -(containerRef.current!.offsetHeight),
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.inOut',
+      }, '+=0.6')
+      .to(navbarRef.current, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' })
+      .to('#heroText', { opacity: 1, x: 0, ease: 'expo.out', duration: 1 }, 'reveal')
+      .to('#theRest', { opacity: 1, y: 0, ease: 'expo.out', duration: 1, delay: 0.2 }, 'reveal')
+      .to('#buttons', { opacity: 1, y: 0, ease: 'expo.out', duration: 1, delay: 0.4 }, 'reveal')
+      .call(() => {
+        sessionStorage.setItem('heroAnimPlayed', 'true');
+        setCarouselVisible(true);
+      });
 
-}, { scope: containerRef });
+  }, { scope: containerRef });
 
   return (
     <div
       ref={containerRef}
       className="relative flex min-h-[calc(100vh-64px)] items-center justify-center overflow-hidden bg-white"
     >
+      <BackgroundCarousel visible={carouselVisible} />
+
       {/* Intro logo */}
       <div
         ref={logoWrapRef}
