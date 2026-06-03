@@ -30,7 +30,7 @@ export default function BackgroundCarousel({ visible }: { visible: boolean }) {
   }, [visible]);
 
   return (
-    <div className="absolute inset-0 md:left-1/3 left-0">
+    <div className="absolute inset-0 opacity-30 sm:opacity-50 transition-opacity">
       {slides.map((src, i) => (
         <img
           key={i}

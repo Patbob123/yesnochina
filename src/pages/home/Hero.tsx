@@ -27,10 +27,16 @@ export default function Hero() {
     if (hasPlayed) {
       gsap.set(logoWrapRef.current, { opacity: 0 });
       gsap.set(navbarRef.current, { y: 0, opacity: 1 });
-      gsap.set('#heroText', { opacity: 1, x: 0 });
-      gsap.set('#theRest', { opacity: 1 });
-      gsap.set('#buttons', { opacity: 1 });
+      gsap.set('#heroText', { opacity: 0, x: -60 });
+      gsap.set('#theRest', { opacity: 0, y: 20 });
+      gsap.set('#buttons', { opacity: 0, y: 20 });
       setCarouselVisible(true);
+
+      gsap.to('#heroText', { opacity: 1, x: 0, ease: 'expo.out', duration: 1 });
+      gsap.to('#theRest', { opacity: 1, y: 0, ease: 'expo.out', duration: 1, delay: 0.2 });
+      gsap.to('#buttons', { opacity: 1, y: 0, ease: 'expo.out', duration: 1, delay: 0.4 });
+
+
       return;
     }
 
@@ -104,30 +110,30 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Main hero content */}
-      <div id="heroText" className="absolute h-full left-0 flex flex-col items-start justify-center lg:pl-20 px-10 max-w-2xl">
-        <div className="flex flex-col items-start justify-center">
-          <div className="font-extrabold lg:text-[4vw] text-[7vw] lg:leading-[4vw] leading-[7vw]">
+      <div id="heroText" className="absolute h-full left-0 right-0 flex flex-col items-center justify-center text-center lg:items-start lg:text-left lg:right-auto lg:pl-20 px-10 max-w-2xl lg:max-w-2xl mx-auto lg:mx-0">
+        <div className="flex flex-col items-center lg:items-start justify-center">
+          <div className="font-extrabold lg:text-[4vw] text-[10vw] lg:leading-[4vw] leading-[10vw]">
             Launch your
           </div>
-          <div className="font-extrabold lg:text-[4vw] text-[7vw] lg:leading-[4vw] leading-[7vw]">
+          <div className="font-extrabold lg:text-[4vw] text-[10vw] lg:leading-[4vw] leading-[10vw]">
             career here.
           </div>
         </div>
-        <div id="theRest" className="flex flex-col items-start justify-center p-1">
-          <div className="text-neutral-500 lg:text-[1.2vw] text-sm my-2">
+        <div id="theRest" className="flex flex-col items-center lg:items-start justify-center p-1">
+          <div className="text-neutral-500 lg:text-[1.2vw] text-sm my-2 text-center lg:text-left">
             guys in uoft career network career network career network career network career network career network
           </div>
         </div>
-        <div id="buttons" className="flex gap-x-3">
-          <button className="flex justify-center md:text-[2vh] text-[9px] bg-brand-yellow font-bold py-3 px-6 rounded-full duration-200 hover:scale-110 transition-all text-white">
+        <div id="buttons" className="flex gap-x-3 justify-center lg:justify-start">
+          <button className="flex justify-center md:text-[2vh] text-xs bg-brand-yellow font-bold py-2.5 px-5 rounded-full duration-200 hover:scale-110 transition-all text-brand-teal">
             Get Involved!
           </button>
-          <button className="flex justify-center md:text-[2vh] text-[9px] bg-brand-teal font-bold py-3 px-6 rounded-full duration-200 hover:scale-110 transition-all text-white">
+          <button className="flex justify-center md:text-[2vh] text-xs bg-brand-teal font-bold py-2.5 px-5 rounded-full duration-200 hover:scale-110 transition-all text-brand-yellow">
             Join as a volunteer!
           </button>
         </div>
       </div>
+      
       <svg
         viewBox="0 0 1440 80"
         preserveAspectRatio="none"
@@ -143,7 +149,7 @@ export default function Hero() {
         <path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#E1F5EE" />
       </svg>
 
-      
+
 
     </div>
   );
