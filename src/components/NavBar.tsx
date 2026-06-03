@@ -38,6 +38,7 @@ const navItems = [
 function Dropdown({ label, children }: { label: string; children: { label: string; href: string; external?: boolean }[] }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -47,32 +48,51 @@ function Dropdown({ label, children }: { label: string; children: { label: strin
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+    useEffect(() => {
+    if (!menuRef.current) return;
+    if (open) {
+      gsap.fromTo(menuRef.current,
+        { opacity: 0, y: -8 },
+        { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }
+      );
+    } else {
+      gsap.to(menuRef.current,
+        { opacity: 0, y: -8, duration: 0.15, ease: 'power2.in' }
+      );
+    }
+  }, [open]);
+
   return (
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-neutral-700 hover:text-black transition-colors"
+        className={cn(
+          'flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors rounded-lg',
+          open ? 'text-brand-teal bg-brand-yellow' : 'text-neutral-700 hover:text-brand-teal hover:bg-brand-yellow'
+        )}
       >
         {label}
         <ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-200', open && 'rotate-180')} />
       </button>
 
-      {open && (
-        <div className="absolute top-full left-0 mt-1 min-w-44 rounded-xl border border-neutral-200 bg-white shadow-lg py-1 z-50">
-          {children.map(item => (
-            <a
-              key={item.href}
-              href={item.href}
-              target={item.external ? '_blank' : undefined}
-              rel={item.external ? 'noopener noreferrer' : undefined}
-              className="block px-4 py-2 text-sm text-neutral-600 hover:bg-brand-yellow hover:text-brand-teal transition-colors"
-              onClick={() => setOpen(false)}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-      )}
+      <div
+        ref={menuRef}
+        style={{ opacity: 0, pointerEvents: open ? 'auto' : 'none' }}
+        className="absolute top-full left-0 mt-1 min-w-44 rounded-xl border border-neutral-200 bg-white shadow-lg py-1 z-50"
+      >
+        {children.map(item => (
+          
+            <a key={item.href}
+            href={item.href}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener noreferrer' : undefined}
+            className="block px-4 py-2 text-sm text-neutral-600 hover:bg-brand-yellow hover:text-brand-teal transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
