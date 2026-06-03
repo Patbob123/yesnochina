@@ -128,6 +128,23 @@ export default function Hero() {
           </button>
         </div>
       </div>
+      <svg
+        viewBox="0 0 1440 80"
+        preserveAspectRatio="none"
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          height: "80px",
+          display: "block",
+        }}
+      >
+        <path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#E1F5EE" />
+      </svg>
+
+      
+
     </div>
   );
 }
