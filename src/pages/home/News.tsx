@@ -19,7 +19,7 @@ export default function News() {
     const sliderRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        gsap.from(sectionRef.current, {
+        gsap.from('.news-inner', {
             opacity: 0,
             y: 40,
             duration: 0.8,
@@ -52,50 +52,52 @@ export default function News() {
 
     return (
         <section ref={sectionRef} className="bg-[#E1F5EE] px-6 py-20">
-            <div className="mx-auto max-w-6xl">
+            <div className="news-inner mx-auto max-w-6xl">
+                <div className="mx-auto max-w-6xl">
 
-                {/* Header row */}
-                <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                    {/* Header row */}
+                    <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 
 
-                    <div className="relative flex w-fit rounded-full border border-brand-teal p-1 bg-brand-teal">
-                        <div
-                            ref={sliderRef}
-                            className={cn(
-                                'absolute top-1 bottom-1 rounded-full bg-white transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
-                                active === 'resources'
-                                    ? 'left-1 right-[50%]'
-                                    : 'left-[50%] right-1'
-                            )}
-                        />
-
-                        {TABS.map(tab => (
-                            <button
-                                key={tab.id}
-                                onClick={() => handleTabChange(tab.id)}
+                        <div className="relative flex w-fit rounded-full border border-brand-teal p-1 bg-brand-teal">
+                            <div
+                                ref={sliderRef}
                                 className={cn(
-                                    'relative z-10 px-4 py-1.5 text-xs font-semibold rounded-full transition-colors duration-300 w-36 whitespace-nowrap',
-                                    active === tab.id ? 'text-brand-teal' : 'text-white'
+                                    'absolute top-1 bottom-1 rounded-full bg-white transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+                                    active === 'resources'
+                                        ? 'left-1 right-[50%]'
+                                        : 'left-[50%] right-1'
                                 )}
-                            >
-                                {tab.label}
-                            </button>
-                        ))}
+                            />
+
+                            {TABS.map(tab => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => handleTabChange(tab.id)}
+                                    className={cn(
+                                        'relative z-10 px-4 py-1.5 text-xs font-semibold rounded-full transition-colors duration-300 w-36 whitespace-nowrap',
+                                        active === tab.id ? 'text-brand-teal' : 'text-white'
+                                    )}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* View all link */}
+                        <a
+                            href={activeTab.viewAll}
+                            className="group flex items-center gap-1.5 text-sm font-semibold text-brand-teal hover:underline underline-offset-4 transition-all shrink-0"
+                        >
+                            {`View all ${activeTab.label.toLowerCase()}`}
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </a>
                     </div>
 
-                    {/* View all link */}
-                    <a
-                        href={activeTab.viewAll}
-                        className="group flex items-center gap-1.5 text-sm font-semibold text-brand-teal hover:underline underline-offset-4 transition-all shrink-0"
-                    >
-                        {`View all ${activeTab.label.toLowerCase()}`}
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </a>
-                </div>
-
-                {/* Content */}
-                <div id="tab-content">
-                    {active === 'resources' ? <FeaturedResources /> : <UpcomingEvents />}
+                    {/* Content */}
+                    <div id="tab-content">
+                        {active === 'resources' ? <FeaturedResources /> : <UpcomingEvents />}
+                    </div>
                 </div>
             </div>
         </section>

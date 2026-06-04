@@ -29,10 +29,10 @@ function MissionSection () {
                 rotateX: 360,
                 duration: 0.6,
                 ease: "power2.out",
-                delay: i*0.3,
+                delay: i*0.15,
                 scrollTrigger: {
                     trigger: card,
-                    start: "top 90%",
+                    start: "top 95%",
                     toggleActions: "restart none reset none",
                 },
                 onComplete: () => {
